@@ -10,7 +10,7 @@ const onGenerateSubmit = (e) => {
   const url = document.getElementById("url").value;
   const size = document.getElementById("size").value;
 
-  // Validate url
+  // Validate URL
   if (url === "") {
     alert("Please enter a URL");
   } else {
@@ -19,40 +19,38 @@ const onGenerateSubmit = (e) => {
     setTimeout(() => {
       hideSpinner();
       generateQRCode(url, size);
-      showScanner();
-      // Generate the save button after the qr code image src is ready
+
+      // Wait for QR code generation
       setTimeout(() => {
-        // Get save url
-        const saveUrl = qr.querySelector("canvas").toDataURL();
-        // Create save button
-        createSaveBtn(saveUrl);
+        const canvas = qr.querySelector("canvas");
+        if (canvas) {
+          const saveUrl = canvas.toDataURL();
+          createSaveBtn(saveUrl); // Create Save button
+        } else {
+          alert("Error generating QR code!");
+        }
       }, 50);
     }, 1000);
   }
 };
 
-// Generate QR code
+// Generate QR code as a canvas
 const generateQRCode = (url, size) => {
-  const qrcode = new QRCode("qrcode", {
+  const qrcode = new QRCode(qr, {
     text: url,
     width: size,
     height: size,
+    correctLevel: QRCode.CorrectLevel.H, // High correction level for better scanability
   });
 };
 
 // Clear QR code and save button
 const clearUI = () => {
-  qr.innerHTML = "";
+  qr.innerHTML = ""; // Clear QR code display
   const saveBtn = document.getElementById("save-link");
   if (saveBtn) {
-    saveBtn.remove();
+    saveBtn.remove(); // Remove previous Save button
   }
-};
-
-// hide  scanner
-const showScanner = () => {
-  const scanner = document.getElementById("qrCodeContainer");
-  scanner.style.display = "block";
 };
 
 // Show spinner
@@ -67,20 +65,19 @@ const hideSpinner = () => {
   spinner.style.display = "none";
 };
 
-// Create save button to download QR code as image
+// Create save button to download QR code as an image
 const createSaveBtn = (saveUrl) => {
   const link = document.createElement("a");
   link.id = "save-link";
   link.classList =
-    'bg-plum-500 hover:bg-plum-700 text-white font-bold py-2 rounded w-1/3 m-auto my-5';
+    'bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 rounded w-1/3 m-auto my-5';
   link.innerHTML = "Save Image";
-
   link.href = saveUrl;
   link.download = "qrcode.png";
 
   document.getElementById("generated").appendChild(link);
 };
 
-hideSpinner();
+hideSpinner(); // Hide spinner initially
 
 form.addEventListener("submit", onGenerateSubmit);
