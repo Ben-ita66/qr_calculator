@@ -9,7 +9,7 @@ Responsive design for optimal viewing on different devices.
 Download the generated QR code as an image (optional, if implemented).
 
 # Live Demo
-You can try the QR Code Generator by opening .
+You can try the QR Code Generator by opening https://vercel.live/link/qr-calculator.vercel.app/?via=team-dashboard-project-entity&p=1.
 
 # Technologies Used
 HTML5: For the structure of the web page.
